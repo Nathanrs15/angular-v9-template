@@ -29,7 +29,9 @@
       "@shareddirectives/*":  ["app/shared/directives/*"],
       "@sharedmodels/*":  ["app/shared/models/*"],
       "@sharedmodules/*":  ["app/shared/modules/*"],
-      "@sharedpipes/*":  ["app/shared/pipes/*"]
+      "@sharedpipes/*":  ["app/shared/pipes/*"],
+      "@sharedenums/*":  ["app/shared/enums/*"]
+
 
     }
   },
