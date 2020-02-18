@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -17,7 +17,21 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@services/*":  ["app/core/services/*"],
+      "@interceptors/*":  ["app/core/interceptors/*"],
+      "@guards/*":  ["app/core/guards/*"],
+      "@coreModule":  ["app/core/core.module"],
+      "@materialModule":  ["app/core/material.module"],
+      "@features/*":  ["app/features/*"],
+      "@sharedcomponents/*":  ["app/shared/components/*"],
+      "@shareddirectives/*":  ["app/shared/directives/*"],
+      "@sharedmodels/*":  ["app/shared/models/*"],
+      "@sharedmodules/*":  ["app/shared/modules/*"],
+      "@sharedpipes/*":  ["app/shared/pipes/*"]
+
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

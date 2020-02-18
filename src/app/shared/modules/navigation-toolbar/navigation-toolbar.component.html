@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <a
+    mat-list-item
+    *ngIf="title$ | async as title"
+    [routerLink]="title.path"
+    routerLinkActive="title-active"
+    >{{ title.title || "DemoNgV9" }}</a
+  >
+
+  <ng-container *ngIf="subtitle$ | async as subtitle">
+    <mat-icon>chevron_right</mat-icon>
+    <span class="title-inactive"> {{ subtitle || "DemoNgV9" }}</span>
+  </ng-container>
+</mat-toolbar>
