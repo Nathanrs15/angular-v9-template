@@ -6,7 +6,8 @@ import {
   QueryList,
   AfterViewInit,
   ChangeDetectorRef,
-  ComponentFactoryResolver
+  ComponentFactoryResolver,
+  OnDestroy
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '@services/data.service';
@@ -18,6 +19,9 @@ import { DashboarComponentContainer } from '../../dashboard-component.container'
 import { Item } from '@sharedmodels/item.model';
 import { DashboardComponents } from '@sharedenums/dashboard.enum';
 import { dashboardComponents } from '@features/home/dashboard-components';
+import { DashboardService } from '@services/dashboard.service';
+import { tap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -26,34 +30,42 @@ import { dashboardComponents } from '@features/home/dashboard-components';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 // tslint:disable-next-line: component-class-suffix
-export class HomePage implements OnInit, AfterViewInit {
+export class HomePage implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(DashboardOutletDirective) dashboardOutlet: QueryList<DashboardOutletDirective>;
 
-  tracks: Array<Track> = [
-    {
-      title: 'CARD 1',
-      items: [{ component: DashboardComponents.VIEW1, id: 'view-1' }]
-    },
-    {
-      title: 'CARD 2',
-      items: [{ component: DashboardComponents.VIEW2, id: 'view-2' }]
-    },
-    {
-      title: 'CARD 3',
-      items: [{ component: DashboardComponents.VIEW3, id: 'view-3' }]
-    }
-  ];
+  private ngUnsubscribe = new Subject();
+  tracks: Array<Track> = [];
+
+
 
   constructor(
     private route: ActivatedRoute,
     private ds: DataService,
     private cd: ChangeDetectorRef,
-    private cfr: ComponentFactoryResolver
+    private cfr: ComponentFactoryResolver,
+    private dashboardService: DashboardService
+
   ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.ds.setTitle(data));
+
+    this.dashboardService.tracks$
+      .pipe(
+        tap(tracks => console.log('tracks', tracks)),
+        tap(tracks => (this.tracks = tracks)),
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe(() => {
+        this.cd.detectChanges();
+        this.loadContents();
+      });
   }
+
+  ngAfterViewInit() {
+    this.loadContents();
+  }
+
 
   loadContent = (template: DashboardOutletDirective, item: Item) => {
     if (!item.component) {
@@ -61,7 +73,6 @@ export class HomePage implements OnInit, AfterViewInit {
     }
 
     console.log('[loadContent] item.component', item.component);
-
 
     const viewContainerRef = template.viewContainerRef;
     viewContainerRef.clear();
@@ -73,21 +84,20 @@ export class HomePage implements OnInit, AfterViewInit {
 
   loadContents = () => {
     if (!this.dashboardOutlet || !this.dashboardOutlet.length) {
-      console.log('[loadContents] ERROR');
       return;
     }
 
     this.dashboardOutlet.forEach(template => {
-      console.log('[loadContents] dashboardOutlet', template);
       this.cd.detectChanges();
       this.loadContent(template, template.item);
     });
     this.cd.detectChanges();
   }
 
-  ngAfterViewInit() {
-    this.loadContents();
-  }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
 }

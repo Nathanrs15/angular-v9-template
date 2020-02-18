@@ -12,6 +12,8 @@ export class DataService {
   private subtitleSource = new BehaviorSubject(null);
   currentSubtitle = this.subtitleSource.asObservable();
 
+  names = ['James', 'Dimebag'];
+
   constructor() { }
 
   setTitle(title) {
