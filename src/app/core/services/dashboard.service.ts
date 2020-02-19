@@ -15,16 +15,18 @@ export class DashboardService {
   constructor() {
     this.defaultState = [
       {
-        title: 'CARD 1',
-        items: [{ component: DashboardComponents.VIEW1, id: 'view-1' }]
+
+        card: { cols: 2, rows: 1, },
+        items: [{ title: 'CARD 1', component: DashboardComponents.VIEW1, id: 'view-1' }]
       },
       {
-        title: 'CARD 2',
-        items: [{ component: DashboardComponents.VIEW2, id: 'view-2' }]
+        card: { cols: 1, rows: 1 },
+        items: [{ title: 'CARD 2', component: DashboardComponents.VIEW2, id: 'view-2' }]
       },
       {
-        title: 'CARD 3',
-        items: [{ component: DashboardComponents.VIEW3, id: 'view-3' }]
+
+        card: { cols: 1, rows: 1 },
+        items: [{ title: 'CARD 3', component: DashboardComponents.VIEW3, id: 'view-3' }]
       }
     ];
 
@@ -53,5 +55,9 @@ export class DashboardService {
     state[0].items.length <= state[1].items.length ? state[0].items.push(item) : state[1].items.push(item);
 
     this.trackSource.next(state);
+  }
+
+  setState = (tracks: Array<Track>) => {
+    this.trackSource.next(tracks);
   }
 }

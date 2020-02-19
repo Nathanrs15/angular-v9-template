@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTreeModule } from '@angular/material/tree';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -30,7 +31,8 @@ const MaterialModules = [
   MatRadioModule,
   ReactiveFormsModule,
   LayoutModule,
-  MatTreeModule
+  MatTreeModule,
+  DragDropModule
 ];
 
 @NgModule({

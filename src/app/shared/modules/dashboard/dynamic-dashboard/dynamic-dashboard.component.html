@@ -1,0 +1,36 @@
+<mat-grid-list
+  cols="2"
+  rowHeight="350px"
+  cdkDropList
+  (cdkDropListDropped)="drop($event)"
+>
+  <mat-grid-tile
+    *ngFor="let track of tracks"
+    [colspan]="track.card.cols"
+    [rowspan]="track.card.rows"
+    cdkDrag
+  >
+    <mat-card *ngFor="let item of track.items" class="dashboard-card">
+      <mat-card-header>
+        <mat-card-title>
+          CARD
+          <button
+            mat-icon-button
+            class="more-button"
+            [matMenuTriggerFor]="menu"
+            aria-label="Toggle menu"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item>Expand</button>
+            <button mat-menu-item>Remove</button>
+          </mat-menu>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="dashboard-card-content">
+        <ng-template appDashboardOutlet [item]="item"></ng-template>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
